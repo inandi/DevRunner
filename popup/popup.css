@@ -1,0 +1,249 @@
+:root {
+  --bg: #0f1419;
+  --surface: #1a222c;
+  --border: #2c3846;
+  --text: #e8eef4;
+  --muted: #8b9aab;
+  --accent: #3d9a78;
+  --accent-hover: #48b089;
+  --danger: #c45c5c;
+  --danger-hover: #d46a6a;
+  --ok: #3d9a78;
+  --err: #d47878;
+  --radius: 6px;
+  --font: "IBM Plex Sans", "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", "SF Mono", ui-monospace, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  width: 360px;
+  max-height: 560px;
+  overflow-y: auto;
+  font-family: var(--font);
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--text);
+  background:
+    radial-gradient(ellipse at top left, #1a2a32 0%, transparent 55%),
+    linear-gradient(165deg, #121820 0%, #0f1419 100%);
+}
+
+.header {
+  padding: 14px 14px 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.brand {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+}
+
+.hostname {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 12px;
+  word-break: break-all;
+}
+
+.page-status {
+  margin: 10px 14px 0;
+  padding: 8px 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--muted);
+}
+
+.section {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.section-title {
+  margin: 0 0 8px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+.script-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.script-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 6px 8px;
+  padding: 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.script-meta {
+  min-width: 0;
+}
+
+.script-name {
+  font-weight: 600;
+  word-break: break-word;
+}
+
+.script-scope {
+  display: inline-block;
+  margin-top: 2px;
+  font-size: 11px;
+  color: var(--muted);
+  font-family: var(--mono);
+}
+
+.script-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.empty {
+  margin: 0;
+  color: var(--muted);
+}
+
+.add-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.field span,
+.toggle span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+input[type="text"],
+textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+}
+
+textarea {
+  font-family: var(--mono);
+  font-size: 12px;
+  resize: vertical;
+  min-height: 88px;
+}
+
+input:focus,
+textarea:focus {
+  outline: 1px solid var(--accent);
+  border-color: var(--accent);
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  appearance: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.btn:hover:not(:disabled) {
+  border-color: #3d4f62;
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn.primary {
+  background: var(--accent);
+  border-color: transparent;
+  color: #06120e;
+}
+
+.btn.primary:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+
+.btn.danger {
+  color: #f0d0d0;
+  border-color: #5a3434;
+}
+
+.btn.danger:hover:not(:disabled) {
+  background: #2a1818;
+  border-color: var(--danger-hover);
+}
+
+.file-btn {
+  display: inline-flex;
+  align-items: center;
+}
+
+.status {
+  margin: 8px 0 0;
+  min-height: 1.2em;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.status.ok {
+  color: var(--ok);
+}
+
+.status.err {
+  color: var(--err);
+}
+
+.run-status {
+  padding: 0 14px 14px;
+}
+
+.footer-tools {
+  border-bottom: none;
+}
