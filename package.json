@@ -1,7 +1,7 @@
 {
   "name": "devrunner",
-  "version": "1.0.0",
-  "description": "Store and run site-specific JavaScript automation snippets in the page main world.",
+  "version": "0.1.0",
+  "description": "Store and run site-specific JavaScript automation snippets in the page main world. (Beta)",
   "license": "MIT",
   "author": "Gobinda Nandi <gobinda.nandi.public@gmail.com>",
   "keywords": [

@@ -1,8 +1,9 @@
 {
   "manifest_version": 3,
-  "name": "DevRunner",
-  "version": "1.0.0",
-  "description": "Store and run site-specific JavaScript automation snippets in the page main world.",
+  "name": "DevRunner (Beta)",
+  "version": "0.1.0",
+  "version_name": "0.1.0 beta",
+  "description": "Store and run site-specific JavaScript automation snippets in the page main world. Beta build for early testing.",
   "permissions": ["activeTab", "scripting", "storage"],
   "action": {
     "default_title": "DevRunner",

@@ -8,8 +8,8 @@
  * Lightweight cross-browser extension for site-specific JS automation in MAIN world.
  *
  * @author Gobinda Nandi <gobinda.nandi.public@gmail.com>
- * @since 1.0.0
- * @version 1.0.0
+ * @since 0.1.0
+ * @version 0.1.0
  * @copyright (c) 2026 Gobinda Nandi
  */
 

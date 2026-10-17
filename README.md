@@ -4,7 +4,7 @@ Lightweight **Manifest V3** browser extension for storing and running **site-spe
 
 **Author:** Gobinda Nandi \<gobinda.nandi.public@gmail.com\>  
 **License:** [MIT](LICENSE) · **Privacy:** [PRIVACY.md](PRIVACY.md)  
-**Version:** 1.0.0
+**Version:** 0.1.0 (beta)
 
 Supports **Chromium** (Chrome, Edge, Brave, Opera), **Firefox**, and **Safari** (via Apple’s Web Extension converter).
 
@@ -154,11 +154,21 @@ xcrun safari-web-extension-converter ./dist/devrunner-webext \
 
 ## Chrome Web Store (short checklist)
 
+Current build is **beta** (`0.1.0` / display name **DevRunner (Beta)**). Chrome versions must be numeric (no `1.0.0-beta` tag).
+
+### Beta (recommended first publish)
+
 1. `npm run package`
-2. Developer dashboard → upload `dist/devrunner-chromium.zip`
-3. Listing: screenshots, description, category (Developer Tools)
-4. Privacy practices → link this repo’s [PRIVACY.md](PRIVACY.md) (raw or GitHub Pages)
+2. [Developer Dashboard](https://chrome.google.com/webstore/devconsole) → **New item** → upload `dist/devrunner-chromium.zip`
+3. Listing: screenshots, description, category (**Developer Tools**)
+4. Privacy practices → link [PRIVACY.md](PRIVACY.md)
 5. Justify `activeTab`, `scripting`, `storage`
+6. Visibility: **Unlisted** (share the link with testers only) — or **Private** if you use a Google Group
+7. Submit for review
+
+### Later: public 1.0
+
+Bump `manifest.json` + `package.json` to `1.0.0`, rename to `DevRunner` (drop Beta), re-package, upload a new version, set visibility to **Public**.
 
 ## Notes
 
