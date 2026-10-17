@@ -1,0 +1,23 @@
+{
+  "name": "devrunner",
+  "version": "1.0.0",
+  "description": "Store and run site-specific JavaScript automation snippets in the page main world.",
+  "license": "MIT",
+  "author": "Gobinda Nandi <gobinda.nandi.public@gmail.com>",
+  "keywords": [
+    "browser-extension",
+    "webextension",
+    "chrome-extension",
+    "firefox-addon",
+    "developer-tools",
+    "manifest-v3"
+  ],
+  "scripts": {
+    "postinstall": "node scripts/vendor-polyfill.js",
+    "vendor": "node scripts/vendor-polyfill.js",
+    "package": "bash scripts/package.sh"
+  },
+  "devDependencies": {
+    "webextension-polyfill": "^0.12.0"
+  }
+}

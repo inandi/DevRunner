@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<!--
+  DevRunner — popup shell (MIT)
+  Author: Gobinda Nandi <gobinda.nandi.public@gmail.com>
+  Version: 1.0.0
+-->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DevRunner</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div>
+        <h1 class="brand">DevRunner</h1>
+        <p id="hostname-label" class="hostname" aria-live="polite">…</p>
+      </div>
+    </header>
+
+    <p id="page-status" class="page-status" hidden></p>
+
+    <section class="section" aria-labelledby="scripts-heading">
+      <h2 id="scripts-heading" class="section-title">Scripts</h2>
+      <ul id="script-list" class="script-list"></ul>
+      <p id="empty-list" class="empty" hidden>No scripts for this host yet.</p>
+    </section>
+
+    <section class="section" aria-labelledby="add-heading">
+      <h2 id="add-heading" class="section-title">Add script</h2>
+      <form id="add-form" class="add-form">
+        <label class="field">
+          <span>Name</span>
+          <input
+            id="script-name"
+            type="text"
+            name="name"
+            autocomplete="off"
+            required
+            placeholder="Reset Storage &amp; Reload"
+          />
+        </label>
+        <label class="field">
+          <span>Code</span>
+          <textarea
+            id="script-code"
+            name="code"
+            rows="5"
+            required
+            placeholder="localStorage.clear(); location.reload();"
+            spellcheck="false"
+          ></textarea>
+        </label>
+        <label class="toggle">
+          <input id="global-toggle" type="checkbox" />
+          <span>Save as global (all domains)</span>
+        </label>
+        <button type="submit" id="add-btn" class="btn primary">Add</button>
+      </form>
+    </section>
+
+    <section class="section footer-tools" aria-labelledby="io-heading">
+      <h2 id="io-heading" class="section-title">Backup</h2>
+      <div class="row">
+        <button type="button" id="export-btn" class="btn">Export JSON</button>
+        <label class="btn file-btn">
+          Import JSON
+          <input id="import-input" type="file" accept="application/json,.json" hidden />
+        </label>
+      </div>
+      <p id="io-status" class="status" role="status" aria-live="polite"></p>
+    </section>
+
+    <p id="run-status" class="status run-status" role="status" aria-live="polite"></p>
+
+    <script src="../lib/browser-polyfill.js"></script>
+    <script src="../lib/hostname.js"></script>
+    <script src="../lib/storage.js"></script>
+    <script src="../lib/execute.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>
