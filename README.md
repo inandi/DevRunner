@@ -106,7 +106,7 @@ lib/
   hostname.js              # Active tab → hostname
   storage.js               # storage.local CRUD + import validation
   execute.js               # scripting.executeScript world MAIN
-icons/
+icons/                     # icon-16/32/48/128.png + logo.png / logo-transparent.png
 scripts/
   vendor-polyfill.js       # npm postinstall copy step
   package.sh               # dist/ webext + store zips

@@ -29,6 +29,8 @@ rsync -a \
   --exclude 'scripts' \
   --exclude '.DS_Store' \
   --exclude '*.md' \
+  --exclude 'icons/logo.png' \
+  --exclude 'icons/logo-transparent.png' \
   "$ROOT/" "$WEBEXT/"
 
 # Keep a copy of README inside webext for store reviewers? Plan said clean assets — skip.
