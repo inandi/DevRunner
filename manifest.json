@@ -1,0 +1,56 @@
+{
+  "manifest_version": 3,
+  "name": "DevRunner (Beta)",
+  "version": "0.1.0",
+  "version_name": "0.1.0 beta",
+  "description": "Store and run site-specific JavaScript automation snippets in the page main world. Beta build for early testing.",
+  "permissions": ["activeTab", "scripting", "storage"],
+  "action": {
+    "default_title": "DevRunner",
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png",
+      "48": "icons/icon-48.png",
+      "128": "icons/icon-128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "background": {
+    "service_worker": "background/service-worker.js"
+  },
+  "commands": {
+    "run-script-1": {
+      "suggested_key": {
+        "default": "Alt+Shift+1",
+        "mac": "Alt+Shift+1"
+      },
+      "description": "Run top domain script #1"
+    },
+    "run-script-2": {
+      "suggested_key": {
+        "default": "Alt+Shift+2",
+        "mac": "Alt+Shift+2"
+      },
+      "description": "Run top domain script #2"
+    },
+    "run-script-3": {
+      "suggested_key": {
+        "default": "Alt+Shift+3",
+        "mac": "Alt+Shift+3"
+      },
+      "description": "Run top domain script #3"
+    }
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "devrunner@inandi.local",
+      "strict_min_version": "121.0"
+    }
+  }
+}
