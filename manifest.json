@@ -1,10 +1,14 @@
 {
   "manifest_version": 3,
   "name": "CAST (Beta)",
-  "version": "0.1.0",
-  "version_name": "0.1.0 beta",
-  "description": "Custom Automation Snippet Trigger. Store and run site-specific JavaScript automation snippets in the page main world. Beta build for early testing.",
-  "permissions": ["activeTab", "scripting", "storage"],
+  "version": "0.1.1",
+  "version_name": "0.1.1 beta",
+  "description": "Custom Automation Snippet Trigger: save and run your own JavaScript snippets per site, in one click or a hotkey. Beta.",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage"
+  ],
   "action": {
     "default_title": "CAST",
     "default_popup": "popup/popup.html",
@@ -45,12 +49,6 @@
         "mac": "Alt+Shift+3"
       },
       "description": "Run top domain script #3"
-    }
-  },
-  "browser_specific_settings": {
-    "gecko": {
-      "id": "cast@inandi.local",
-      "strict_min_version": "121.0"
     }
   }
 }

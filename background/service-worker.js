@@ -8,15 +8,14 @@
  *
  * @author Gobinda Nandi <gobinda.nandi.public@gmail.com>
  * @since 0.1.0
- * @version 0.1.0
+ * @version 0.1.1
  * @copyright (c) 2026 Gobinda Nandi
  */
 
-/* global importScripts, browser, Cast */
+/* global importScripts, chrome, Cast */
 "use strict";
 
 importScripts(
-  "../lib/browser-polyfill.js",
   "../lib/hostname.js",
   "../lib/storage.js",
   "../lib/execute.js"
@@ -35,20 +34,20 @@ const COMMAND_INDEX = {
  */
 async function flashBadge(tabId, ok) {
   try {
-    await browser.action.setBadgeBackgroundColor({
+    await chrome.action.setBadgeBackgroundColor({
       tabId,
       color: ok ? "#2e7d32" : "#c62828",
     });
-    await browser.action.setBadgeText({ tabId, text: ok ? "OK" : "!" });
+    await chrome.action.setBadgeText({ tabId, text: ok ? "OK" : "!" });
     setTimeout(() => {
-      browser.action.setBadgeText({ tabId, text: "" }).catch(() => {});
+      chrome.action.setBadgeText({ tabId, text: "" }).catch(() => {});
     }, 2000);
   } catch {
     // Tab may have closed; nothing to show.
   }
 }
 
-browser.commands.onCommand.addListener(async (command) => {
+chrome.commands.onCommand.addListener(async (command) => {
   const index = COMMAND_INDEX[command];
   if (index == null) return;
 

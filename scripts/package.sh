@@ -1,16 +1,11 @@
 #!/usr/bin/env bash
-# CAST — build clean webext tree + Chromium/Firefox zip artifacts (MIT).
+# CAST — build clean extension tree + Chrome Web Store zip (MIT).
 # Author: Gobinda Nandi <gobinda.nandi.public@gmail.com>
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 DIST="$ROOT/dist"
 WEBEXT="$DIST/cast-webext"
-
-# Ensure polyfill is present
-if [[ ! -f "$ROOT/lib/browser-polyfill.js" ]]; then
-  (cd "$ROOT" && npm run vendor)
-fi
 
 rm -rf "$DIST"
 mkdir -p "$WEBEXT"
@@ -19,9 +14,10 @@ mkdir -p "$WEBEXT"
 rsync -a \
   --exclude 'node_modules' \
   --exclude 'dist' \
-  --exclude 'safari-build' \
   --exclude '.git' \
   --exclude '.gitignore' \
+  --exclude '.github' \
+  --exclude '.editorconfig' \
   --exclude '.vscode' \
   --exclude '.cursor' \
   --exclude 'package.json' \
@@ -38,13 +34,8 @@ rsync -a \
 (
   cd "$WEBEXT"
   zip -qr "$DIST/cast-chromium.zip" .
-  cp "$DIST/cast-chromium.zip" "$DIST/cast-firefox.zip"
 )
 
 echo "Built:"
 echo "  $WEBEXT/"
 echo "  $DIST/cast-chromium.zip"
-echo "  $DIST/cast-firefox.zip"
-echo ""
-echo "Safari (macOS + Xcode):"
-echo "  xcrun safari-web-extension-converter \"$WEBEXT\" --project-location \"$ROOT/safari-build\""

@@ -3,7 +3,6 @@ node_modules/
 
 # Build / packaging outputs
 dist/
-safari-build/
 
 # Logs & debug
 *.log

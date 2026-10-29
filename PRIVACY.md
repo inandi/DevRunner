@@ -11,7 +11,7 @@ CAST is a browser extension that stores and runs JavaScript snippets you create.
 
 ## Data stored on your device
 
-- Script decks (name, code, timestamps) are saved in the browser’s local extension storage (`browser.storage.local` / `chrome.storage.local`).
+- Script decks (name, code, timestamps) are saved in the browser’s local extension storage (`chrome.storage.local`).
 - Data stays on the device/profile where the extension is installed unless you export a JSON backup yourself.
 
 ## Permissions
@@ -24,7 +24,7 @@ CAST is a browser extension that stores and runs JavaScript snippets you create.
 
 ## Third parties
 
-CAST does not include analytics SDKs or advertising networks. The vendored `webextension-polyfill` library runs locally as part of the extension.
+CAST does not include analytics SDKs or advertising networks.
 
 ## Contact
 

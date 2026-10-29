@@ -2,44 +2,33 @@
 
 **C**ustom **A**utomation **S**nippet **T**rigger — cast your own scripts onto any site.
 
-Lightweight **Manifest V3** browser extension for storing and running **site-specific JavaScript** snippets in the page **main world** (`window`). Built for local development and QA — clear storage, fill forms, trigger UI flows, without retyping console scripts.
+Lightweight **Manifest V3** Chrome extension for storing and running **site-specific JavaScript** snippets in the page **main world** (`window`). Built for local development and QA — clear storage, fill forms, trigger UI flows, without retyping console scripts.
 
 **Author:** Gobinda Nandi \<gobinda.nandi.public@gmail.com\>  
 **License:** [MIT](LICENSE) · **Privacy:** [PRIVACY.md](PRIVACY.md)  
-**Version:** 0.1.0 (beta)
+**Version:** 0.1.1 (beta)
 
-Supports **Chromium** (Chrome, Edge, Brave, Opera), **Firefox**, and **Safari** (via Apple’s Web Extension converter).
+Built for **Google Chrome**.
 
 ## Features
 
-- Scripts namespaced by hostname in `browser.storage.local` (plus a **global** deck)
+- Scripts namespaced by hostname in `chrome.storage.local` (plus a **global** deck)
 - One-click run via `scripting.executeScript` with `world: "MAIN"`
-- Add / delete snippets from the popup
+- Add, copy, and delete snippets from the popup
 - JSON **export / import** (replace-all on import)
-- Keyboard shortcuts for the top 3 **domain** scripts (by `createdAt`)
-- Cross-browser API via vendored [`webextension-polyfill`](https://github.com/mozilla/webextension-polyfill)
+- Keyboard shortcuts for the top 3 **domain** scripts (by `createdAt`), with a toolbar badge showing the result
+- Async snippets: top-level `await` works, and returned promises are awaited
+- No dependencies — plain JavaScript, no build step
 
 ## Quick start (unpacked)
 
 ```bash
 git clone <your-repo-url> cast
-cd cast
-npm install          # vendors lib/browser-polyfill.js
 ```
 
-Load **this repo folder** (the directory that contains `manifest.json`), not `dist/` or `node_modules/`.
-
-### Chromium (Chrome / Edge / Brave / Opera)
-
-1. Open `chrome://extensions` (or `edge://extensions`)
+1. Open `chrome://extensions`
 2. Enable **Developer mode**
-3. **Load unpacked** → select the CAST repo root
-
-### Firefox
-
-1. Open `about:debugging#/runtime/this-firefox`
-2. **Load Temporary Add-on…** → choose `manifest.json`
-3. Temporary add-ons are removed when Firefox quits
+3. **Load unpacked** → select the repo folder (the one containing `manifest.json`)
 
 ### Sample snippet (`localhost`)
 
@@ -68,16 +57,16 @@ Restricted pages (`chrome://`, `about:`, extension pages, etc.) show an unsuppor
 | Run domain script #2 | `Alt+Shift+2` | Second oldest |
 | Run domain script #3 | `Alt+Shift+3` | Third oldest |
 
-Global scripts are **not** bound to these shortcuts. Rebind under:
+Global scripts are **not** bound to these shortcuts. Rebind them at `chrome://extensions/shortcuts`.
 
-- Chrome: `chrome://extensions/shortcuts`
-- Firefox: Add-ons Manager → gear → Manage Extension Shortcuts
-- Edge: `edge://extensions/shortcuts`
+After a shortcut runs, the toolbar icon briefly shows **OK** (green) or **!** (red: script error, no script at that slot, or unsupported page).
 
 ## Import / export
 
-- **Export JSON** downloads the full `storage.local` object
-- **Import JSON** validates the schema and **replaces all** stored scripts after confirm
+Both buttons live in the popup header.
+
+- **Export** downloads the full `storage.local` object
+- **Import** validates the schema and **replaces all** stored scripts after confirm
 
 Schema:
 
@@ -104,14 +93,12 @@ manifest.json              # MV3 entry
 popup/                     # Dashboard UI (HTML/CSS/JS)
 background/                # Service worker — hotkey commands
 lib/
-  browser-polyfill.js      # Vendored (Mozilla) — do not edit by hand
   hostname.js              # Active tab → hostname
   storage.js               # storage.local CRUD + import validation
   execute.js               # scripting.executeScript world MAIN
 icons/                     # icon-16/32/48/128.png (from logo-transparent.png) + logo-transparent.png
 scripts/
-  vendor-polyfill.js       # npm postinstall copy step
-  package.sh               # dist/ webext + store zips
+  package.sh               # dist/ extension tree + store zip
 ```
 
 Source modules attach to `globalThis.Cast` and load as classic scripts (no bundler). File headers use JSDoc (`@file`, `@license`, `@author`, `@version`).
@@ -135,28 +122,13 @@ npm run package
 | Artifact | Purpose |
 |----------|---------|
 | `dist/cast-webext/` | Clean extension tree |
-| `dist/cast-chromium.zip` | Chrome Web Store / Edge Add-ons |
-| `dist/cast-firefox.zip` | Firefox AMO (same payload; gecko id in manifest) |
+| `dist/cast-chromium.zip` | Chrome Web Store upload |
 
 Bump `version` in both `manifest.json` and `package.json` before each store upload.
 
-### Safari (macOS)
-
-Requires **Xcode** (`safari-web-extension-converter` is not in plain Command Line Tools).
-
-```bash
-npm run package
-xcrun safari-web-extension-converter ./dist/cast-webext \
-  --project-location ./safari-build \
-  --app-name CAST \
-  --bundle-identifier local.inandi.cast
-```
-
-`safari-build/` is gitignored. Signing and Mac App Store submission are manual in Xcode.
-
 ## Chrome Web Store (short checklist)
 
-Current build is **beta** (`0.1.0` / display name **CAST (Beta)**). Chrome versions must be numeric (no `1.0.0-beta` tag).
+Current build is **beta** (`0.1.1` / display name **CAST (Beta)**). Chrome versions must be numeric (no `1.0.0-beta` tag).
 
 ### Beta (recommended first publish)
 
@@ -174,10 +146,8 @@ Bump `manifest.json` + `package.json` to `1.0.0`, rename to `CAST` (drop Beta), 
 
 ## Notes
 
-- Snippets run as functions in the page context; thrown errors surface in the popup status
-- Prefer normal DOM/API calls over exotic eval patterns on strict-CSP sites
-- Firefox id: `cast@inandi.local` (`browser_specific_settings.gecko`)
-- `lib/browser-polyfill.js` is third-party (Mozilla); regenerate with `npm run vendor`
+- Snippets run as async functions in the page context; thrown errors surface in the popup status
+- Sites with a strict Content Security Policy (no `unsafe-eval`) block snippets; the popup reports this
 
 ## License
 

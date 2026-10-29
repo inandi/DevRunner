@@ -8,7 +8,7 @@
  *
  * @author Gobinda Nandi <gobinda.nandi.public@gmail.com>
  * @since 0.1.0
- * @version 0.1.0
+ * @version 0.1.1
  * @copyright (c) 2026 Gobinda Nandi
  */
 
@@ -270,6 +270,8 @@
     try {
       await storage.addScript(targetKey, { name, code });
       els.addForm.reset();
+      if (!pageCtx.ok) els.globalToggle.checked = true;
+      syncFormEnabled();
       setStatus(els.runStatus, `Saved “${name.trim()}”.`, "ok");
       await refreshList();
     } catch (err) {
@@ -293,7 +295,7 @@
       a.href = url;
       a.download = `cast-export-${stamp}.json`;
       a.click();
-      URL.revokeObjectURL(url);
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
       setStatus(els.runStatus, "Export downloaded.", "ok");
     } catch (err) {
       setStatus(
