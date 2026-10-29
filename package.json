@@ -1,5 +1,5 @@
 {
-  "name": "devrunner",
+  "name": "cast",
   "version": "0.1.0",
   "description": "Store and run site-specific JavaScript automation snippets in the page main world. (Beta)",
   "license": "MIT",

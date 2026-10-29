@@ -1,5 +1,5 @@
 /**
- * DevRunner - Popup dashboard
+ * CAST - Popup dashboard
  *
  * @file UI to list, add, run, delete, import, and export scripts for the active host.
  * @license MIT
@@ -15,7 +15,7 @@
 (function () {
   "use strict";
 
-  const { hostname, storage, execute } = DevRunner;
+  const { hostname, storage, execute } = Cast;
 
   const els = {
     hostnameLabel: document.getElementById("hostname-label"),
@@ -225,7 +225,7 @@
       const a = document.createElement("a");
       const stamp = new Date().toISOString().slice(0, 10);
       a.href = url;
-      a.download = `devrunner-export-${stamp}.json`;
+      a.download = `cast-export-${stamp}.json`;
       a.click();
       URL.revokeObjectURL(url);
       setStatus(els.ioStatus, "Export downloaded.", "ok");
@@ -244,7 +244,7 @@
     if (!file) return;
 
     const confirmed = confirm(
-      "Replace ALL DevRunner scripts with this import? This cannot be undone."
+      "Replace ALL CAST scripts with this import? This cannot be undone."
     );
     if (!confirmed) return;
 

@@ -1,4 +1,6 @@
-# DevRunner
+# CAST
+
+**C**ustom **A**utomation **S**nippet **T**rigger — cast your own scripts onto any site.
 
 Lightweight **Manifest V3** browser extension for storing and running **site-specific JavaScript** snippets in the page **main world** (`window`). Built for local development and QA — clear storage, fill forms, trigger UI flows, without retyping console scripts.
 
@@ -20,8 +22,8 @@ Supports **Chromium** (Chrome, Edge, Brave, Opera), **Firefox**, and **Safari** 
 ## Quick start (unpacked)
 
 ```bash
-git clone <your-repo-url> DevRunner
-cd DevRunner
+git clone <your-repo-url> cast
+cd cast
 npm install          # vendors lib/browser-polyfill.js
 ```
 
@@ -31,7 +33,7 @@ Load **this repo folder** (the directory that contains `manifest.json`), not `di
 
 1. Open `chrome://extensions` (or `edge://extensions`)
 2. Enable **Developer mode**
-3. **Load unpacked** → select the DevRunner repo root
+3. **Load unpacked** → select the CAST repo root
 
 ### Firefox
 
@@ -52,7 +54,7 @@ location.reload();
 ## Usage
 
 1. Open an `http`/`https` tab (e.g. `http://localhost:3000`)
-2. Click the DevRunner toolbar icon
+2. Click the CAST toolbar icon
 3. Add a script (optionally check **Save as global**)
 4. **Run** executes in the page’s main world; status appears at the bottom of the popup
 
@@ -106,13 +108,13 @@ lib/
   hostname.js              # Active tab → hostname
   storage.js               # storage.local CRUD + import validation
   execute.js               # scripting.executeScript world MAIN
-icons/                     # icon-16/32/48/128.png + logo.png / logo-transparent.png
+icons/                     # icon-16/32/48/128.png (from logo-transparent.png) + logo-transparent.png
 scripts/
   vendor-polyfill.js       # npm postinstall copy step
   package.sh               # dist/ webext + store zips
 ```
 
-Source modules attach to `globalThis.DevRunner` and load as classic scripts (no bundler). File headers use JSDoc (`@file`, `@license`, `@author`, `@version`).
+Source modules attach to `globalThis.Cast` and load as classic scripts (no bundler). File headers use JSDoc (`@file`, `@license`, `@author`, `@version`).
 
 ## Permissions
 
@@ -132,9 +134,9 @@ npm run package
 
 | Artifact | Purpose |
 |----------|---------|
-| `dist/devrunner-webext/` | Clean extension tree |
-| `dist/devrunner-chromium.zip` | Chrome Web Store / Edge Add-ons |
-| `dist/devrunner-firefox.zip` | Firefox AMO (same payload; gecko id in manifest) |
+| `dist/cast-webext/` | Clean extension tree |
+| `dist/cast-chromium.zip` | Chrome Web Store / Edge Add-ons |
+| `dist/cast-firefox.zip` | Firefox AMO (same payload; gecko id in manifest) |
 
 Bump `version` in both `manifest.json` and `package.json` before each store upload.
 
@@ -144,22 +146,22 @@ Requires **Xcode** (`safari-web-extension-converter` is not in plain Command Lin
 
 ```bash
 npm run package
-xcrun safari-web-extension-converter ./dist/devrunner-webext \
+xcrun safari-web-extension-converter ./dist/cast-webext \
   --project-location ./safari-build \
-  --app-name DevRunner \
-  --bundle-identifier local.inandi.devrunner
+  --app-name CAST \
+  --bundle-identifier local.inandi.cast
 ```
 
 `safari-build/` is gitignored. Signing and Mac App Store submission are manual in Xcode.
 
 ## Chrome Web Store (short checklist)
 
-Current build is **beta** (`0.1.0` / display name **DevRunner (Beta)**). Chrome versions must be numeric (no `1.0.0-beta` tag).
+Current build is **beta** (`0.1.0` / display name **CAST (Beta)**). Chrome versions must be numeric (no `1.0.0-beta` tag).
 
 ### Beta (recommended first publish)
 
 1. `npm run package`
-2. [Developer Dashboard](https://chrome.google.com/webstore/devconsole) → **New item** → upload `dist/devrunner-chromium.zip`
+2. [Developer Dashboard](https://chrome.google.com/webstore/devconsole) → **New item** → upload `dist/cast-chromium.zip`
 3. Listing: screenshots, description, category (**Developer Tools**)
 4. Privacy practices → link [PRIVACY.md](PRIVACY.md)
 5. Justify `activeTab`, `scripting`, `storage`
@@ -168,13 +170,13 @@ Current build is **beta** (`0.1.0` / display name **DevRunner (Beta)**). Chrome 
 
 ### Later: public 1.0
 
-Bump `manifest.json` + `package.json` to `1.0.0`, rename to `DevRunner` (drop Beta), re-package, upload a new version, set visibility to **Public**.
+Bump `manifest.json` + `package.json` to `1.0.0`, rename to `CAST` (drop Beta), re-package, upload a new version, set visibility to **Public**.
 
 ## Notes
 
 - Snippets run as functions in the page context; thrown errors surface in the popup status
 - Prefer normal DOM/API calls over exotic eval patterns on strict-CSP sites
-- Firefox id: `devrunner@inandi.local` (`browser_specific_settings.gecko`)
+- Firefox id: `cast@inandi.local` (`browser_specific_settings.gecko`)
 - `lib/browser-polyfill.js` is third-party (Mozilla); regenerate with `npm run vendor`
 
 ## License

@@ -1,13 +1,13 @@
-# Privacy Policy — DevRunner
+# Privacy Policy — CAST
 
 **Last updated:** 2026-10-17  
 **Author:** Gobinda Nandi \<gobinda.nandi.public@gmail.com\>
 
-DevRunner is a browser extension that stores and runs JavaScript snippets you create.
+CAST is a browser extension that stores and runs JavaScript snippets you create.
 
 ## Data we collect
 
-**None remotely.** DevRunner does not send your scripts, browsing history, or personal data to any server operated by the author.
+**None remotely.** CAST does not send your scripts, browsing history, or personal data to any server operated by the author.
 
 ## Data stored on your device
 
@@ -18,13 +18,13 @@ DevRunner is a browser extension that stores and runs JavaScript snippets you cr
 
 | Permission | Why |
 |------------|-----|
-| `activeTab` | Read the current tab’s URL/hostname and run a script only when you open the popup or use a DevRunner keyboard shortcut |
+| `activeTab` | Read the current tab’s URL/hostname and run a script only when you open the popup or use a CAST keyboard shortcut |
 | `scripting` | Execute your snippet in the page’s main world |
 | `storage` | Persist scripts locally |
 
 ## Third parties
 
-DevRunner does not include analytics SDKs or advertising networks. The vendored `webextension-polyfill` library runs locally as part of the extension.
+CAST does not include analytics SDKs or advertising networks. The vendored `webextension-polyfill` library runs locally as part of the extension.
 
 ## Contact
 

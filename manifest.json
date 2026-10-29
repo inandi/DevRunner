@@ -1,12 +1,12 @@
 {
   "manifest_version": 3,
-  "name": "DevRunner (Beta)",
+  "name": "CAST (Beta)",
   "version": "0.1.0",
   "version_name": "0.1.0 beta",
-  "description": "Store and run site-specific JavaScript automation snippets in the page main world. Beta build for early testing.",
+  "description": "Custom Automation Snippet Trigger. Store and run site-specific JavaScript automation snippets in the page main world. Beta build for early testing.",
   "permissions": ["activeTab", "scripting", "storage"],
   "action": {
-    "default_title": "DevRunner",
+    "default_title": "CAST",
     "default_popup": "popup/popup.html",
     "default_icon": {
       "16": "icons/icon-16.png",
@@ -49,7 +49,7 @@
   },
   "browser_specific_settings": {
     "gecko": {
-      "id": "devrunner@inandi.local",
+      "id": "cast@inandi.local",
       "strict_min_version": "121.0"
     }
   }

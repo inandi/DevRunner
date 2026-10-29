@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * DevRunner - Vendor webextension-polyfill
+ * CAST - Vendor webextension-polyfill
  *
  * @file Copy browser-polyfill.js from node_modules into lib/ for unpacked loads.
  * @license MIT

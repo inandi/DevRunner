@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# DevRunner — build clean webext tree + Chromium/Firefox zip artifacts (MIT).
+# CAST — build clean webext tree + Chromium/Firefox zip artifacts (MIT).
 # Author: Gobinda Nandi <gobinda.nandi.public@gmail.com>
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 DIST="$ROOT/dist"
-WEBEXT="$DIST/devrunner-webext"
+WEBEXT="$DIST/cast-webext"
 
 # Ensure polyfill is present
 if [[ ! -f "$ROOT/lib/browser-polyfill.js" ]]; then
@@ -29,7 +29,6 @@ rsync -a \
   --exclude 'scripts' \
   --exclude '.DS_Store' \
   --exclude '*.md' \
-  --exclude 'icons/logo.png' \
   --exclude 'icons/logo-transparent.png' \
   "$ROOT/" "$WEBEXT/"
 
@@ -38,14 +37,14 @@ rsync -a \
 # Zip contents must be at archive root (not a parent folder)
 (
   cd "$WEBEXT"
-  zip -qr "$DIST/devrunner-chromium.zip" .
-  cp "$DIST/devrunner-chromium.zip" "$DIST/devrunner-firefox.zip"
+  zip -qr "$DIST/cast-chromium.zip" .
+  cp "$DIST/cast-chromium.zip" "$DIST/cast-firefox.zip"
 )
 
 echo "Built:"
 echo "  $WEBEXT/"
-echo "  $DIST/devrunner-chromium.zip"
-echo "  $DIST/devrunner-firefox.zip"
+echo "  $DIST/cast-chromium.zip"
+echo "  $DIST/cast-firefox.zip"
 echo ""
 echo "Safari (macOS + Xcode):"
 echo "  xcrun safari-web-extension-converter \"$WEBEXT\" --project-location \"$ROOT/safari-build\""
