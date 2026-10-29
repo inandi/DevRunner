@@ -1,51 +1,38 @@
 #!/usr/bin/env bash
-# DevRunner — build clean webext tree + Chromium/Firefox zip artifacts (MIT).
+# CAST — build clean extension tree + Chrome Web Store zip (MIT).
 # Author: Gobinda Nandi <gobinda.nandi.public@gmail.com>
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 DIST="$ROOT/dist"
-WEBEXT="$DIST/devrunner-webext"
-
-# Ensure polyfill is present
-if [[ ! -f "$ROOT/lib/browser-polyfill.js" ]]; then
-  (cd "$ROOT" && npm run vendor)
-fi
+WEBEXT="$DIST/cast-webext"
 
 rm -rf "$DIST"
 mkdir -p "$WEBEXT"
 
-# Extension assets only (no node_modules / package tooling)
-rsync -a \
-  --exclude 'node_modules' \
-  --exclude 'dist' \
-  --exclude 'safari-build' \
-  --exclude '.git' \
-  --exclude '.gitignore' \
-  --exclude '.vscode' \
-  --exclude '.cursor' \
-  --exclude 'package.json' \
-  --exclude 'package-lock.json' \
-  --exclude 'scripts' \
-  --exclude '.DS_Store' \
-  --exclude '*.md' \
-  --exclude 'icons/logo.png' \
-  --exclude 'icons/logo-transparent.png' \
-  "$ROOT/" "$WEBEXT/"
+# Allowlist: only files the extension loads at runtime. Repo tooling, docs,
+# and release files (release.sh, CHANGELOG.md, ...) never reach the store zip.
+INCLUDE=(
+  manifest.json
+  LICENSE
+  background
+  lib
+  popup
+  icons/icon-16.png
+  icons/icon-32.png
+  icons/icon-48.png
+  icons/icon-128.png
+)
 
-# Keep a copy of README inside webext for store reviewers? Plan said clean assets — skip.
+cd "$ROOT"
+rsync -aR --exclude '.DS_Store' "${INCLUDE[@]}" "$WEBEXT/"
 
 # Zip contents must be at archive root (not a parent folder)
 (
   cd "$WEBEXT"
-  zip -qr "$DIST/devrunner-chromium.zip" .
-  cp "$DIST/devrunner-chromium.zip" "$DIST/devrunner-firefox.zip"
+  zip -qr "$DIST/cast-chromium.zip" .
 )
 
 echo "Built:"
 echo "  $WEBEXT/"
-echo "  $DIST/devrunner-chromium.zip"
-echo "  $DIST/devrunner-firefox.zip"
-echo ""
-echo "Safari (macOS + Xcode):"
-echo "  xcrun safari-web-extension-converter \"$WEBEXT\" --project-location \"$ROOT/safari-build\""
+echo "  $DIST/cast-chromium.zip"

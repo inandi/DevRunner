@@ -3,7 +3,6 @@ node_modules/
 
 # Build / packaging outputs
 dist/
-safari-build/
 
 # Logs & debug
 *.log
@@ -27,3 +26,5 @@ Thumbs.db
 
 # Optional local notes
 *.local.md
+release.md.sample
+release.sh

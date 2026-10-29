@@ -1,5 +1,5 @@
 /**
- * DevRunner - Background service worker
+ * CAST - Background service worker
  *
  * @file Handle keyboard commands that run the top domain scripts for the active tab.
  * @license MIT
@@ -8,15 +8,14 @@
  *
  * @author Gobinda Nandi <gobinda.nandi.public@gmail.com>
  * @since 0.1.0
- * @version 0.1.0
+ * @version 0.1.1
  * @copyright (c) 2026 Gobinda Nandi
  */
 
-/* global importScripts, browser, DevRunner */
+/* global importScripts, chrome, Cast */
 "use strict";
 
 importScripts(
-  "../lib/browser-polyfill.js",
   "../lib/hostname.js",
   "../lib/storage.js",
   "../lib/execute.js"
@@ -28,31 +27,54 @@ const COMMAND_INDEX = {
   "run-script-3": 2,
 };
 
-browser.commands.onCommand.addListener(async (command) => {
+/**
+ * Flash a short badge on the action icon so hotkey outcomes are visible.
+ * @param {number} tabId
+ * @param {boolean} ok
+ */
+async function flashBadge(tabId, ok) {
+  try {
+    await chrome.action.setBadgeBackgroundColor({
+      tabId,
+      color: ok ? "#2e7d32" : "#c62828",
+    });
+    await chrome.action.setBadgeText({ tabId, text: ok ? "OK" : "!" });
+    setTimeout(() => {
+      chrome.action.setBadgeText({ tabId, text: "" }).catch(() => {});
+    }, 2000);
+  } catch {
+    // Tab may have closed; nothing to show.
+  }
+}
+
+chrome.commands.onCommand.addListener(async (command) => {
   const index = COMMAND_INDEX[command];
   if (index == null) return;
 
   try {
-    const ctx = await DevRunner.hostname.getActiveHostname();
+    const ctx = await Cast.hostname.getActiveHostname();
     if (!ctx.ok || !ctx.tab || ctx.tab.id == null || !ctx.hostname) {
-      console.warn("DevRunner hotkey: unsupported tab", ctx.reason);
+      console.warn("CAST hotkey: unsupported tab", ctx.reason);
+      if (ctx.tab && ctx.tab.id != null) flashBadge(ctx.tab.id, false);
       return;
     }
 
-    const scripts = await DevRunner.storage.listHostScriptsSorted(ctx.hostname);
+    const scripts = await Cast.storage.listHostScriptsSorted(ctx.hostname);
     const snippet = scripts[index];
     if (!snippet) {
       console.warn(
-        `DevRunner hotkey: no domain script #${index + 1} for ${ctx.hostname}`
+        `CAST hotkey: no domain script #${index + 1} for ${ctx.hostname}`
       );
+      flashBadge(ctx.tab.id, false);
       return;
     }
 
-    const result = await DevRunner.execute.runInTab(ctx.tab.id, snippet.code);
+    const result = await Cast.execute.runInTab(ctx.tab.id, snippet.code);
     if (!result.ok) {
-      console.error("DevRunner hotkey failed:", result.error);
+      console.error("CAST hotkey failed:", result.error);
     }
+    flashBadge(ctx.tab.id, result.ok);
   } catch (err) {
-    console.error("DevRunner hotkey error:", err);
+    console.error("CAST hotkey error:", err);
   }
 });
