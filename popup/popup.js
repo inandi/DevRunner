@@ -29,9 +29,13 @@
     addBtn: document.getElementById("add-btn"),
     exportBtn: document.getElementById("export-btn"),
     importInput: document.getElementById("import-input"),
-    ioStatus: document.getElementById("io-status"),
     runStatus: document.getElementById("run-status"),
   };
+
+  const COPY_ICON =
+    '<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><rect x="5.5" y="5.5" width="8" height="8" rx="1.5"/><path d="M10.5 3.5v-.5A1.5 1.5 0 0 0 9 1.5H4A1.5 1.5 0 0 0 2.5 3v5A1.5 1.5 0 0 0 4 9.5h.5"/></svg>';
+  const CHECK_ICON =
+    '<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3 3 7-7"/></svg>';
 
   /** @type {{ ok: boolean, hostname: string|null, tab: object|null, reason: string|null }} */
   let pageCtx = {
@@ -41,10 +45,20 @@
     reason: "Loading…",
   };
 
+  let statusTimer = null;
+
+  /** Show a toast message; ok/err messages fade out on their own. */
   function setStatus(el, message, kind) {
+    clearTimeout(statusTimer);
     el.textContent = message || "";
     el.classList.remove("ok", "err");
     if (kind) el.classList.add(kind);
+    if (kind) {
+      statusTimer = setTimeout(() => {
+        el.textContent = "";
+        el.classList.remove("ok", "err");
+      }, kind === "err" ? 6000 : 3500);
+    }
   }
 
   function truncate(str, max) {
@@ -111,6 +125,14 @@
     runBtn.setAttribute("aria-label", `Run ${snippet.name}`);
     runBtn.addEventListener("click", () => onRun(snippet));
 
+    const copyBtn = document.createElement("button");
+    copyBtn.type = "button";
+    copyBtn.className = "btn icon-btn";
+    copyBtn.innerHTML = COPY_ICON;
+    copyBtn.title = "Copy code";
+    copyBtn.setAttribute("aria-label", `Copy code of ${snippet.name}`);
+    copyBtn.addEventListener("click", () => onCopy(snippet, copyBtn));
+
     const delBtn = document.createElement("button");
     delBtn.type = "button";
     delBtn.className = "btn danger";
@@ -119,6 +141,7 @@
     delBtn.addEventListener("click", () => onDelete(snippet, scope));
 
     actions.appendChild(runBtn);
+    actions.appendChild(copyBtn);
     actions.appendChild(delBtn);
 
     li.appendChild(meta);
@@ -173,11 +196,54 @@
     }
   }
 
+  /**
+   * Write text to the clipboard, falling back to execCommand when the
+   * async Clipboard API is unavailable or rejected.
+   * @param {string} text
+   */
+  async function copyText(text) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return;
+    } catch {
+      // Fall through to the legacy path.
+    }
+    const area = document.createElement("textarea");
+    area.value = text;
+    area.setAttribute("readonly", "");
+    area.style.position = "fixed";
+    area.style.opacity = "0";
+    document.body.appendChild(area);
+    area.select();
+    const ok = document.execCommand("copy");
+    area.remove();
+    if (!ok) throw new Error("Clipboard is not available.");
+  }
+
+  async function onCopy(snippet, button) {
+    try {
+      await copyText(snippet.code);
+      button.innerHTML = CHECK_ICON;
+      button.classList.add("copied");
+      setTimeout(() => {
+        button.innerHTML = COPY_ICON;
+        button.classList.remove("copied");
+      }, 1500);
+      setStatus(els.runStatus, `Copied “${snippet.name}” to clipboard.`, "ok");
+    } catch (err) {
+      setStatus(
+        els.runStatus,
+        `Copy failed · ${err && err.message ? err.message : String(err)}`,
+        "err"
+      );
+    }
+  }
+
   async function onDelete(snippet, scope) {
     const ok = confirm(`Delete “${snippet.name}”?`);
     if (!ok) return;
     await storage.deleteScript(scope, snippet.id);
-    setStatus(els.runStatus, `Deleted “${snippet.name}”.`);
+    setStatus(els.runStatus, `Deleted “${snippet.name}”.`, "ok");
     await refreshList();
   }
 
@@ -228,10 +294,10 @@
       a.download = `cast-export-${stamp}.json`;
       a.click();
       URL.revokeObjectURL(url);
-      setStatus(els.ioStatus, "Export downloaded.", "ok");
+      setStatus(els.runStatus, "Export downloaded.", "ok");
     } catch (err) {
       setStatus(
-        els.ioStatus,
+        els.runStatus,
         err && err.message ? err.message : String(err),
         "err"
       );
@@ -254,20 +320,20 @@
       try {
         parsed = JSON.parse(text);
       } catch {
-        setStatus(els.ioStatus, "Invalid JSON file.", "err");
+        setStatus(els.runStatus, "Invalid JSON file.", "err");
         return;
       }
       const validated = storage.validateImportPayload(parsed);
       if (!validated.ok) {
-        setStatus(els.ioStatus, validated.error, "err");
+        setStatus(els.runStatus, validated.error, "err");
         return;
       }
       await storage.setAll(validated.data);
-      setStatus(els.ioStatus, "Import complete (replaced all).", "ok");
+      setStatus(els.runStatus, "Import complete (replaced all).", "ok");
       await refreshList();
     } catch (err) {
       setStatus(
-        els.ioStatus,
+        els.runStatus,
         err && err.message ? err.message : String(err),
         "err"
       );

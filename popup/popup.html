@@ -14,15 +14,22 @@
   <body>
     <header class="header">
       <img class="logo" src="../icons/icon-48.png" alt="" width="32" height="32" />
-      <div>
+      <div class="header-text">
         <h1 class="brand">CAST</h1>
         <p id="hostname-label" class="hostname" aria-live="polite">…</p>
+      </div>
+      <div class="header-actions" role="group" aria-label="Backup">
+        <button type="button" id="export-btn" class="btn ghost" title="Export all scripts as JSON">Export</button>
+        <label class="btn ghost file-btn" title="Replace all scripts from a JSON backup">
+          Import
+          <input id="import-input" type="file" accept="application/json,.json" hidden />
+        </label>
       </div>
     </header>
 
     <p id="page-status" class="page-status" hidden></p>
 
-    <section class="section" aria-labelledby="scripts-heading">
+    <section class="section scripts-section" aria-labelledby="scripts-heading">
       <h2 id="scripts-heading" class="section-title">Scripts</h2>
       <ul id="script-list" class="script-list"></ul>
       <p id="empty-list" class="empty" hidden>No scripts for this host yet.</p>
@@ -47,7 +54,7 @@
           <textarea
             id="script-code"
             name="code"
-            rows="5"
+            rows="3"
             required
             placeholder="localStorage.clear(); location.reload();"
             spellcheck="false"
@@ -57,20 +64,13 @@
           <input id="global-toggle" type="checkbox" />
           <span>Save as global (all domains)</span>
         </label>
-        <button type="submit" id="add-btn" class="btn primary">Add</button>
+        <button type="submit" id="add-btn" class="btn add-btn">
+          <svg class="add-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+            <path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+          Add script
+        </button>
       </form>
-    </section>
-
-    <section class="section footer-tools" aria-labelledby="io-heading">
-      <h2 id="io-heading" class="section-title">Backup</h2>
-      <div class="row">
-        <button type="button" id="export-btn" class="btn">Export JSON</button>
-        <label class="btn file-btn">
-          Import JSON
-          <input id="import-input" type="file" accept="application/json,.json" hidden />
-        </label>
-      </div>
-      <p id="io-status" class="status" role="status" aria-live="polite"></p>
     </section>
 
     <p id="run-status" class="status run-status" role="status" aria-live="polite"></p>
