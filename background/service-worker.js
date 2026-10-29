@@ -28,6 +28,26 @@ const COMMAND_INDEX = {
   "run-script-3": 2,
 };
 
+/**
+ * Flash a short badge on the action icon so hotkey outcomes are visible.
+ * @param {number} tabId
+ * @param {boolean} ok
+ */
+async function flashBadge(tabId, ok) {
+  try {
+    await browser.action.setBadgeBackgroundColor({
+      tabId,
+      color: ok ? "#2e7d32" : "#c62828",
+    });
+    await browser.action.setBadgeText({ tabId, text: ok ? "OK" : "!" });
+    setTimeout(() => {
+      browser.action.setBadgeText({ tabId, text: "" }).catch(() => {});
+    }, 2000);
+  } catch {
+    // Tab may have closed; nothing to show.
+  }
+}
+
 browser.commands.onCommand.addListener(async (command) => {
   const index = COMMAND_INDEX[command];
   if (index == null) return;
@@ -36,6 +56,7 @@ browser.commands.onCommand.addListener(async (command) => {
     const ctx = await DevRunner.hostname.getActiveHostname();
     if (!ctx.ok || !ctx.tab || ctx.tab.id == null || !ctx.hostname) {
       console.warn("DevRunner hotkey: unsupported tab", ctx.reason);
+      if (ctx.tab && ctx.tab.id != null) flashBadge(ctx.tab.id, false);
       return;
     }
 
@@ -45,6 +66,7 @@ browser.commands.onCommand.addListener(async (command) => {
       console.warn(
         `DevRunner hotkey: no domain script #${index + 1} for ${ctx.hostname}`
       );
+      flashBadge(ctx.tab.id, false);
       return;
     }
 
@@ -52,6 +74,7 @@ browser.commands.onCommand.addListener(async (command) => {
     if (!result.ok) {
       console.error("DevRunner hotkey failed:", result.error);
     }
+    flashBadge(ctx.tab.id, result.ok);
   } catch (err) {
     console.error("DevRunner hotkey error:", err);
   }
