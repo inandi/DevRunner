@@ -26,3 +26,5 @@ Thumbs.db
 
 # Optional local notes
 *.local.md
+release.md.sample
+release.sh
